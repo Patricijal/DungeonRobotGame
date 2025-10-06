@@ -1,12 +1,15 @@
+import java.util.List;
 import java.util.Objects;
 
 public class GameRules {
     private Map map;
     private Robot robot;
+    private List<MovingObstacle> obstacles;
 
-    public GameRules(Map map, Robot robot) {
+    public GameRules(Map map, Robot robot, List<MovingObstacle> obstacles) {
         this.map = map;
         this.robot = robot;
+        this.obstacles = obstacles;
     }
 
     public void processInput(int input) {
@@ -18,6 +21,12 @@ public class GameRules {
             robot.moveUp();
         } else if (input == 's' && !map.isWall(robot.getX() + 1, robot.getY()) && !(map.isLockedDoor(robot.getX() + 1, robot.getY()) && robot.keys == 0)) {
             robot.moveDown();
+        }
+    }
+
+    public void moveObstacles() {
+        for (MovingObstacle obstacle : obstacles) {
+            obstacle.move();
         }
     }
 

@@ -1,11 +1,16 @@
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
-    static Robot robot = new Robot(3, 3);
     static Map map = new Map();
+    static Robot robot = new Robot(3, 3);
+    static List<MovingObstacle> obstacles = List.of(
+            new MovingObstacle(10, 6, 1, 0, 3),
+            new MovingObstacle(4, 10, 0, 1, 5)
+    );
 
-    static GameRules gameRules = new GameRules(map, robot);
-    static GameRenderer gameRenderer = new GameRenderer(map, robot);
+    static GameRules gameRules = new GameRules(map, robot, obstacles);
+    static GameRenderer gameRenderer = new GameRenderer(map, robot, obstacles);
 
     public static void main(String[] args) throws IOException {
         while (true) {
@@ -19,6 +24,7 @@ public class Main {
             if (read == null)
                 continue;
             gameRules.processInput(read);
+            gameRules.moveObstacles();
         }
     }
 

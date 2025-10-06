@@ -1,12 +1,16 @@
+import java.util.List;
+
 public class GameRenderer {
     private Map map;
     private Robot robot;
+    private List<MovingObstacle> obstacles;
 
-    private int visionRadius = 3;
+    private int visionRadius = 100;
 
-    public GameRenderer(Map map, Robot robot) {
+    public GameRenderer(Map map, Robot robot, List<MovingObstacle> obstacles) {
         this.map = map;
         this.robot = robot;
+        this.obstacles = obstacles;
     }
 
     public void render() {
@@ -19,6 +23,8 @@ public class GameRenderer {
                     // inside vision
                     if (i == robot.getX() && j == robot.getY()) {
                         System.out.print("R");
+                    } else if (isObstacleAt(i, j)) {
+                        System.out.print("@");
                     } else {
                         System.out.print(map.model[i][j]);
                     }
@@ -29,5 +35,12 @@ public class GameRenderer {
             }
             System.out.println();
         }
+    }
+
+    private boolean isObstacleAt(int x, int y) {
+        for (MovingObstacle obstacle : obstacles) {
+            if (obstacle.getX() == x && obstacle.getY() == y) return true;
+        }
+        return false;
     }
 }
