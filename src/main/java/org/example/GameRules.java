@@ -82,7 +82,7 @@ public class GameRules {
 
     public void checkGameOver() {
         if (robot.getLives() == 0) {
-            System.out.println("Game Over!");
+            System.out.println("Game Over! You lose!");
             System.exit(0);
         }
     }

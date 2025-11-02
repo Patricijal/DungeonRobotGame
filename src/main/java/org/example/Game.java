@@ -12,32 +12,70 @@ public class Game {
     }
 
     public void start() throws IOException {
-        while (true) {
-            gameRenderer.render();
-            gameRules.pickKey();
-            gameRules.useKey();
-            gameRules.loseLife();
-            gameRules.checkGameOver();
-            gameRules.gameFinish();
+        while (isGameRunning()) {
+            executeGameLoop();
+        }
+    }
 
-            Integer input = getNonBlockingInput();
-            if (input != null) {
-                if (input == 'q') {
-                    System.out.println("Quitting the game.");
-                    break;
-                }
+    private boolean isGameRunning() {
+        return true;
+    }
+
+    private void executeGameLoop() throws IOException {
+        renderGameState();
+        processGameLogic();
+        handlePlayerInput();
+        updateObstacles();
+        manageGameTiming();
+        clearScreen();
+    }
+
+    private void renderGameState() {
+        gameRenderer.render();
+    }
+
+    private void processGameLogic() {
+        gameRules.pickKey();
+        gameRules.useKey();
+        gameRules.loseLife();
+        gameRules.checkGameOver();
+        gameRules.gameFinish();
+    }
+
+    private void handlePlayerInput() throws IOException {
+        Integer input = getNonBlockingInput();
+        if (input != null) {
+            if (isQuitCommand(input)) {
+                exitGame();
+            } else {
                 gameRules.processInput(input);
             }
-
-            gameRules.moveObstacles();
-
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                break;
-            }
-            System.out.print("\033[2J\033[1;1H");
         }
+    }
+
+    private void updateObstacles() {
+        gameRules.moveObstacles();
+    }
+
+    private void manageGameTiming() {
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[2J\033[1;1H");
+    }
+
+    private boolean isQuitCommand(Integer input) {
+        return input == 'q';
+    }
+
+    private void exitGame() {
+        System.out.println("Quitting the game.");
+        System.exit(0);
     }
 
     private Integer getNonBlockingInput() throws IOException {
