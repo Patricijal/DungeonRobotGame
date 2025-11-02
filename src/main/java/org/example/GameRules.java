@@ -14,17 +14,21 @@ public class GameRules {
         this.obstacles = obstacles;
     }
 
-    // command pattern implementation (future)
     public void processInput(int input) {
-        if (input == 'a' && !map.isWall(robot.getX(), robot.getY() - 1) && !(map.isLockedDoor(robot.getX(), robot.getY() - 1) && robot.getKeys() == 0)) {
-            robot.moveLeft();
-        } else if (input == 'd' && !map.isWall(robot.getX(), robot.getY() + 1) && !(map.isLockedDoor(robot.getX(), robot.getY() + 1) && robot.getKeys() == 0)) {
-            robot.moveRight();
-        } else if (input == 'w' && !map.isWall(robot.getX() - 1, robot.getY()) && !(map.isLockedDoor(robot.getX() - 1, robot.getY()) && robot.getKeys() == 0)) {
-            robot.moveUp();
-        } else if (input == 's' && !map.isWall(robot.getX() + 1, robot.getY()) && !(map.isLockedDoor(robot.getX() + 1, robot.getY()) && robot.getKeys() == 0)) {
-            robot.moveDown();
+        MovementCommand command = createCommand(input);
+        if (command != null && command.canExecute()) {
+            command.execute();
         }
+    }
+
+    private MovementCommand createCommand(int input) {
+        return switch (input) {
+            case 'a' -> new MoveLeftCommand(robot, map);
+            case 'd' -> new MoveRightCommand(robot, map);
+            case 'w' -> new MoveUpCommand(robot, map);
+            case 's' -> new MoveDownCommand(robot, map);
+            default -> null;
+        };
     }
 
     public void moveObstacles() {
@@ -48,7 +52,7 @@ public class GameRules {
     }
 
     public void loseLife() {
-        if (Objects.equals(map.getModel()[robot.getX()][robot.getY()], "@") || obstacles.stream().anyMatch(obstacle -> obstacle.getX() == robot.getX() && obstacle.getY() == robot.getY())) {
+        if (shouldLoseLife()) {
             robot.setLives(robot.getLives() - 1);
             System.out.println("You lost a life! Remaining lives: " + robot.getLives());
             try {
@@ -59,6 +63,21 @@ public class GameRules {
             robot.setX(3);
             robot.setY(3);
         }
+    }
+
+    private boolean shouldLoseLife() {
+        return isOnTrap() || isCollidingWithObstacle();
+    }
+
+    private boolean isOnTrap() {
+        return Objects.equals(map.getModel()[robot.getX()][robot.getY()], "@");
+    }
+
+    private boolean isCollidingWithObstacle() {
+        return obstacles.stream()
+                .anyMatch(obstacle ->
+                        obstacle.getX() == robot.getX() &&
+                                obstacle.getY() == robot.getY());
     }
 
     public void checkGameOver() {

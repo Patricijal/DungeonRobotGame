@@ -49,7 +49,6 @@ public class GameRenderer {
     private void renderGridCell(StringBuilder screenBuffer, int x, int y) {
         int dx = Math.abs(x - robot.getX());
         int dy = Math.abs(y - robot.getY());
-
         if (dx <= visionRadius && dy <= visionRadius) {
             renderVisibleCell(screenBuffer, x, y);
         } else {
