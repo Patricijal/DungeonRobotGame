@@ -29,8 +29,8 @@ public class GameRenderer {
     }
 
     private void renderHeader(StringBuilder screenBuffer) {
-        screenBuffer.append("Lives: ").append(robot.getLives()).append(" ");
-        screenBuffer.append("Keys: ").append(robot.getKeys()).append("\n\n");
+        screenBuffer.append(Colorizer.red("Lives: " + robot.getLives())).append(" ");
+        screenBuffer.append(Colorizer.yellow("Keys: " + robot.getKeys())).append("\n\n");
     }
 
     private void renderGameGrid(StringBuilder screenBuffer) {
@@ -52,31 +52,42 @@ public class GameRenderer {
         if (dx <= visionRadius && dy <= visionRadius) {
             renderVisibleCell(screenBuffer, x, y);
         } else {
-            screenBuffer.append("?"); // Fog of war
+            screenBuffer.append(Colorizer.blue("?")); // Fog of war
         }
     }
 
     private void renderVisibleCell(StringBuilder screenBuffer, int x, int y) {
         if (x == robot.getX() && y == robot.getY()) {
-            screenBuffer.append("R");
+            screenBuffer.append(Colorizer.green("R"));
         } else if (isObstacleAt(x, y)) {
             renderObstacleCell(screenBuffer, x, y);
         } else {
-            screenBuffer.append(map.getModel()[x][y]);
+            renderMapCell(screenBuffer, map.getModel()[x][y]);
+        }
+    }
+
+    private void renderMapCell(StringBuilder screenBuffer, String cellContent) {
+        switch (cellContent) {
+            case "#" -> screenBuffer.append(Colorizer.cyan("#"));
+            case "K" -> screenBuffer.append(Colorizer.yellow("K"));
+            case "X" -> screenBuffer.append(Colorizer.red("X"));
+            case "E" -> screenBuffer.append(Colorizer.yellow("E"));
+            case "@" -> screenBuffer.append(Colorizer.purple("@"));
+            default -> screenBuffer.append(" ");
         }
     }
 
     private void renderObstacleCell(StringBuilder screenBuffer, int x, int y) {
         MovingObstacle obstacle = getObstacleAt(x, y);
         if (obstacle instanceof DisappearingMovingObstacle) {
-            screenBuffer.append(((DisappearingMovingObstacle) obstacle).getDisplaySymbol());
+            screenBuffer.append(Colorizer.purple(((DisappearingMovingObstacle) obstacle).getDisplaySymbol()));
         } else {
-            screenBuffer.append("@");
+            screenBuffer.append(Colorizer.purple("@"));
         }
     }
 
     private void renderControls(StringBuilder screenBuffer) {
-        screenBuffer.append("\n[WASD] + [Enter] to move, [Q] to quit.\n");
+        screenBuffer.append(Colorizer.cyan("\n[WASD] + [Enter] to move, [Q] to quit.\n"));
     }
 
     private boolean isObstacleAt(int x, int y) {
