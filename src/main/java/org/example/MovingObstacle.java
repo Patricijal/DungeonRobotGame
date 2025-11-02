@@ -3,20 +3,7 @@ package org.example;
 public class MovingObstacle {
     private int x;
     private int y;
-
-    private int directionX;
-    private int directionY;
-
-    private int stepsTaken = 0;
-    private int maxSteps;
-
-    public MovingObstacle(int x, int y, int directionX, int directionY, int maxSteps) {
-        this.x = x;
-        this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.maxSteps = maxSteps;
-    }
+    private MovementStrategy movementStrategy;
 
     public int getX() {
         return x;
@@ -26,15 +13,19 @@ public class MovingObstacle {
         return y;
     }
 
-    public void move() {
-        x += directionX;
-        y += directionY;
-        stepsTaken++;
+    public MovingObstacle(int x, int y, int directionX, int directionY, int maxSteps) {
+        this.x = x;
+        this.y = y;
+        this.movementStrategy = new LinearMovement(directionX, directionY, maxSteps);
+    }
 
-        if (stepsTaken >= maxSteps) {
-            directionX = -directionX;
-            directionY = -directionY;
-            stepsTaken = 0;
-        }
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void move() {
+        movementStrategy.move(this);
+        movementStrategy = movementStrategy.reverse();
     }
 }
