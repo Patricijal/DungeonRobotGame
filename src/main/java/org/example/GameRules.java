@@ -7,6 +7,7 @@ public class GameRules {
     private Map map;
     private Robot robot;
     private List<MovingObstacle> obstacles;
+    private Position spawnPoint = new Position(3, 3);
 
     public GameRules(Map map, Robot robot, List<MovingObstacle> obstacles) {
         this.map = map;
@@ -48,21 +49,34 @@ public class GameRules {
         if (Objects.equals(map.getModel()[robot.getX()][robot.getY()], "X") && robot.getKeys() > 0) {
             robot.setKeys(robot.getKeys() - 1);
             map.getModel()[robot.getX()][robot.getY()] = " ";
+            updateSpawnPoint(robot.getX(), robot.getY());
         }
+    }
+
+    private void updateSpawnPoint(int x, int y) {
+        this.spawnPoint = new Position(x, y);
     }
 
     public void loseLife() {
         if (shouldLoseLife()) {
             robot.setLives(robot.getLives() - 1);
-            System.out.println("You lost a life! Remaining lives: " + robot.getLives());
-            try {
-                Thread.sleep(5000); // Pause for 5 second to let the player see the message
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            robot.setX(3);
-            robot.setY(3);
+            showLifeLostMessage();
+            respawnRobot();
         }
+    }
+
+    private void showLifeLostMessage() {
+        System.out.println("You lost a life! Remaining lives: " + robot.getLives());
+        try {
+            Thread.sleep(5000); // Pause for 5 second to let the player see the message
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private void respawnRobot() {
+        robot.setX(spawnPoint.x());
+        robot.setY(spawnPoint.y());
     }
 
     private boolean shouldLoseLife() {
