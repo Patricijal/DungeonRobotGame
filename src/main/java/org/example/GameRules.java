@@ -51,7 +51,6 @@ public class GameRules {
         if (Objects.equals(map.getModel()[robot.getX()][robot.getY()], "@") || obstacles.stream().anyMatch(obstacle -> obstacle.getX() == robot.getX() && obstacle.getY() == robot.getY())) {
             robot.setLives(robot.getLives() - 1);
             System.out.println("You lost a life! Remaining lives: " + robot.getLives());
-
             try {
                 Thread.sleep(5000); // Pause for 5 second to let the player see the message
             } catch (InterruptedException e) {

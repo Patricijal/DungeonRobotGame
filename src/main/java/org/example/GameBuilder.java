@@ -23,6 +23,16 @@ public class GameBuilder {
         return this;
     }
 
+    public GameBuilder addSlowObstacle(int x, int y, int directionX, int directionY, int maxSteps, int moveDelay) {
+        this.obstacles.add(new SlowMovingObstacle(x, y, directionX, directionY, maxSteps, moveDelay));
+        return this;
+    }
+
+    public GameBuilder addDisappearingObstacle(int x, int y, int directionX, int directionY, int maxSteps) {
+        this.obstacles.add(new DisappearingMovingObstacle(x, y, directionX, directionY, maxSteps));
+        return this;
+    }
+
     public Game build() {
         if (map == null) {
             map = new Map();

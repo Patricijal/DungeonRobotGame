@@ -28,22 +28,24 @@ public class GameRenderer {
             for (int j = 0; j < map.getWidth(); j++) {
                 int dx = Math.abs(i - robot.getX());
                 int dy = Math.abs(j - robot.getY());
-
                 if (dx <= visionRadius && dy <= visionRadius) {
-                    // inside vision
                     if (i == robot.getX() && j == robot.getY()) {
                         screenBuffer.append("R");
                     } else if (isObstacleAt(i, j)) {
-                        screenBuffer.append("@");
+                        MovingObstacle obstacle = getObstacleAt(i, j);
+                        if (obstacle instanceof DisappearingMovingObstacle) {
+                            screenBuffer.append(((DisappearingMovingObstacle) obstacle).getDisplaySymbol());
+                        } else {
+                            screenBuffer.append("@");
+                        }
                     } else {
                         screenBuffer.append(map.getModel()[i][j]);
                     }
                 } else {
-                    // outside vision (fog)
                     screenBuffer.append("?");
                 }
             }
-            screenBuffer.append("\n"); // Add newline after each row
+            screenBuffer.append("\n");
         }
         screenBuffer.append("\n[WASD] + [Enter] to move, [Q] to quit.\n");
         return screenBuffer.toString();
@@ -54,5 +56,14 @@ public class GameRenderer {
             if (obstacle.getX() == x && obstacle.getY() == y) return true;
         }
         return false;
+    }
+
+    private MovingObstacle getObstacleAt(int x, int y) {
+        for (MovingObstacle obstacle : obstacles) {
+            if (obstacle.getX() == x && obstacle.getY() == y) {
+                return obstacle;
+            }
+        }
+        return null;
     }
 }
