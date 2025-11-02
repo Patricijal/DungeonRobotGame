@@ -7,6 +7,7 @@ public class Robot {
     private int keys = 0;
     private int lives = 3;
 
+
     public Robot(int x, int y) {
         this.x = x;
         this.y = y;
