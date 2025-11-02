@@ -1,6 +1,7 @@
 package org.example;
 
 public class LinearMovement implements MovementStrategy {
+    // Using Strategy Pattern for obstacle movement
     private final int directionX;
     private final int directionY;
     private int stepsTaken;
