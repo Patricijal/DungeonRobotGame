@@ -7,7 +7,7 @@ public class GameRenderer {
     private final Robot robot;
     private final List<MovingObstacle> obstacles;
 
-    private final int visionRadius = 100;
+    private final int visionRadius = 5;
 
     public GameRenderer(Map map, Robot robot, List<MovingObstacle> obstacles) {
         this.map = map;
