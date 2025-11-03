@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.IOException;
 
+// "C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.1\plugins\maven\lib\maven3\bin\mvn.cmd" compile exec:java -Dexec.mainClass="org.example.Main"
 public class Main {
     public static void main(String[] args) throws IOException {
         // Builder Pattern to create the game

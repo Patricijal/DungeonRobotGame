@@ -3,11 +3,11 @@ package org.example;
 import java.util.List;
 
 public class GameRenderer {
-    private Map map;
-    private Robot robot;
-    private List<MovingObstacle> obstacles;
+    private final Map map;
+    private final Robot robot;
+    private final List<MovingObstacle> obstacles;
 
-    private int visionRadius = 100;
+    private final int visionRadius = 100;
 
     public GameRenderer(Map map, Robot robot, List<MovingObstacle> obstacles) {
         this.map = map;
@@ -92,7 +92,9 @@ public class GameRenderer {
 
     private boolean isObstacleAt(int x, int y) {
         for (MovingObstacle obstacle : obstacles) {
-            if (obstacle.getX() == x && obstacle.getY() == y) return true;
+            if (obstacle.getX() == x && obstacle.getY() == y) {
+                return true;
+            }
         }
         return false;
     }

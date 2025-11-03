@@ -6,7 +6,6 @@ public class Colorizer {
     private static boolean checkColorSupport() {
         try {
             String os = System.getProperty("os.name").toLowerCase();
-
             if (os.contains("windows")) {
                 return supportsWindowsANSI();
             } else {
