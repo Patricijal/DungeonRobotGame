@@ -9,6 +9,10 @@ public class GameState {
         }
     }
 
+    public boolean shouldExitGame(Robot robot, CollisionDetector collisionDetector, LifeManager lifeManager) {
+        return lifeManager.isGameOver(robot) || collisionDetector.isOnExit(robot);
+    }
+
     private void endGame(String message) {
         System.out.println(message);
         System.exit(0);

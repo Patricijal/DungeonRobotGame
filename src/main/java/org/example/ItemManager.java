@@ -12,17 +12,29 @@ public class ItemManager {
     }
 
     public void pickKey(Robot robot) {
-        if (Objects.equals(map.getModel()[robot.getX()][robot.getY()], "K")) {
+        if (isOnKey(robot)) {
             robot.setKeys(robot.getKeys() + 1);
             map.getModel()[robot.getX()][robot.getY()] = " ";
         }
     }
 
     public void useKey(Robot robot) {
-        if (Objects.equals(map.getModel()[robot.getX()][robot.getY()], "X") && robot.getKeys() > 0) {
+        if (isOnLockedDoor(robot) && hasKeys(robot)) {
             robot.setKeys(robot.getKeys() - 1);
             map.getModel()[robot.getX()][robot.getY()] = " ";
             lifeManager.updateSpawnPoint(robot.getX(), robot.getY());
         }
+    }
+
+    private boolean isOnKey(Robot robot) {
+        return Objects.equals(map.getModel()[robot.getX()][robot.getY()], "K");
+    }
+
+    private boolean isOnLockedDoor(Robot robot) {
+        return Objects.equals(map.getModel()[robot.getX()][robot.getY()], "X");
+    }
+
+    private boolean hasKeys(Robot robot) {
+        return robot.getKeys() > 0;
     }
 }

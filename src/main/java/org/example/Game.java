@@ -39,7 +39,6 @@ public class Game {
         gameRules.useKey();
         gameRules.loseLife();
         gameRules.checkGameOver();
-        gameRules.gameFinish();
     }
 
     private void handlePlayerInput() throws IOException {

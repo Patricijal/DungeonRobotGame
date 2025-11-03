@@ -49,8 +49,4 @@ public class GameRules {
     public void checkGameOver() {
         gameState.checkGameStatus(robot, collisionDetector, lifeManager);
     }
-
-    public void gameFinish() {
-        checkGameOver();
-    }
 }

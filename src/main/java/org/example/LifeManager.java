@@ -36,6 +36,6 @@ public class LifeManager {
     }
 
     public boolean isGameOver(Robot robot) {
-        return robot.getLives() == 0;
+        return robot.getLives() <= 0;
     }
 }
